@@ -1199,7 +1199,11 @@ file:///home/akarsh/project_2/apps/web/.dart_tool/flutter_build/61d322309910a89e
 file:///home/akarsh/project_2/apps/web/.dart_tool/flutter_build/61d322309910a89e233ab662731bb78d/web_plugin_registrant.dart
 file:///home/akarsh/project_2/apps/web/.dart_tool/package_config.json
 file:///home/akarsh/project_2/apps/web/lib/main.dart
+file:///home/akarsh/project_2/apps/web/lib/screens/backup_phrase_screen.dart
 file:///home/akarsh/project_2/apps/web/lib/screens/chat_screen.dart
+file:///home/akarsh/project_2/apps/web/lib/screens/create_account_screen.dart
+file:///home/akarsh/project_2/apps/web/lib/screens/login_screen.dart
+file:///home/akarsh/project_2/apps/web/lib/screens/welcome_screen.dart
 file:///home/akarsh/project_2/apps/web/lib/widgets/message_bubble.dart
 file:///home/akarsh/project_2/apps/web/lib/widgets/message_input.dart
 file:///home/akarsh/project_2/packages/adapters/lib/ai/cloudflare_ai_adapter.dart
@@ -1208,6 +1212,7 @@ file:///home/akarsh/project_2/packages/adapters/lib/ai/mock_ai_adapter.dart
 file:///home/akarsh/project_2/packages/adapters/lib/crypto/signal_crypto_adapter.dart
 file:///home/akarsh/project_2/packages/adapters/lib/ecomesh_adapters.dart
 file:///home/akarsh/project_2/packages/adapters/lib/storage/memory_adapter.dart
+file:///home/akarsh/project_2/packages/adapters/lib/storage/secure_storage_adapter.dart
 file:///home/akarsh/project_2/packages/adapters/lib/transport/bluetooth_adapter.dart
 file:///home/akarsh/project_2/packages/adapters/lib/transport/mock_transport.dart
 file:///home/akarsh/project_2/packages/adapters/lib/transport/webrtc_adapter.dart
@@ -1229,6 +1234,7 @@ file:///home/akarsh/project_2/packages/services/lib/ai_service.dart
 file:///home/akarsh/project_2/packages/services/lib/contact_service.dart
 file:///home/akarsh/project_2/packages/services/lib/discovery_service.dart
 file:///home/akarsh/project_2/packages/services/lib/ecomesh_services.dart
+file:///home/akarsh/project_2/packages/services/lib/identity_service.dart
 file:///home/akarsh/project_2/packages/services/lib/messaging_service.dart
 file:///home/akarsh/project_2/packages/services/lib/providers.dart
 org-dartlang-sdk:///dart-sdk/lib/_http/crypto.dart

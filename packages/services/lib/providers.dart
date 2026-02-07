@@ -109,8 +109,10 @@ class UserNotifier extends StateNotifier<User?> {
   Future<void> _loadUser() async {
     final identity = await _storage.load<Map<String, dynamic>>('user_identity');
     if (identity != null) {
+      final userId = identity['userId'] as String;
       state = User(
-        id: identity['userId'] as String,
+        id: userId,
+        username: 'user_${userId.substring(0, 8)}',
         displayName: 'Anonymous User',
         publicKey: identity['publicKey'] as String,
         createdAt: DateTime.now(),
