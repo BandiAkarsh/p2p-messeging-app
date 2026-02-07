@@ -1,7 +1,8 @@
-library ecomesh_services; // Services library
+library ecomesh_services;
 
-export 'messaging_service.dart'; // Messaging business logic
-export 'discovery_service.dart'; // Peer discovery logic
-export 'contact_service.dart'; // Contact management
-export 'ai_service.dart'; // AI feature orchestration
-export 'providers.dart'; // Riverpod providers
+export 'messaging_service.dart';
+export 'discovery_service.dart';
+export 'contact_service.dart';
+export 'ai_service.dart';
+export 'identity_service.dart';
+export 'providers.dart';

@@ -12,6 +12,7 @@ export 'ai/mock_ai_adapter.dart';
 
 // Storage adapters
 export 'storage/memory_adapter.dart';
+export 'storage/secure_storage_adapter.dart';
 
 // Crypto adapters
 export 'crypto/signal_crypto_adapter.dart';
