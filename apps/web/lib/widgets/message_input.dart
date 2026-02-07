@@ -22,7 +22,7 @@ class MessageInput extends StatelessWidget { // Message input widget
         color: theme.colorScheme.surface,                             // Background color
         boxShadow: [                                                  // Shadow
           BoxShadow(                                                  // Shadow definition
-            color: Colors.black.withOpacity(0.1),                     // Shadow color
+            color: Colors.black.withValues(alpha: 0.1),                     // Shadow color
             blurRadius: 8,                                            // Blur radius
             offset: const Offset(0, -2),                              // Shadow offset
           ),

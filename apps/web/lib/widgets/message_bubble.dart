@@ -43,8 +43,8 @@ class MessageBubble extends StatelessWidget { // Message bubble widget
                   style: TextStyle(                                  // Text style
                     fontSize: 12,                                     // Small font
                     color: isMe                                       // Text color
-                        ? theme.colorScheme.onPrimary.withOpacity(0.7) // Light if sent
-                        : theme.colorScheme.onSurface.withOpacity(0.7), // Dark if received
+                        ? theme.colorScheme.onPrimary.withValues(alpha: 0.7) // Light if sent
+                        : theme.colorScheme.onSurface.withValues(alpha: 0.7), // Dark if received
                   ),
                 ),
               ),
@@ -66,8 +66,8 @@ class MessageBubble extends StatelessWidget { // Message bubble widget
                   style: TextStyle(                                  // Text style
                     fontSize: 11,                                     // Small font
                     color: isMe                                       // Color
-                        ? theme.colorScheme.onPrimary.withOpacity(0.6) // Light
-                        : theme.colorScheme.onSurface.withOpacity(0.6), // Dark
+                        ? theme.colorScheme.onPrimary.withValues(alpha: 0.6) // Light
+                        : theme.colorScheme.onSurface.withValues(alpha: 0.6), // Dark
                   ),
                 ),
                 const SizedBox(width: 4),                              // Spacing
@@ -75,7 +75,7 @@ class MessageBubble extends StatelessWidget { // Message bubble widget
                   Icon(                                               // Status icon
                     _getStatusIcon(message.status),                   // Status icon
                     size: 14,                                         // Small icon
-                    color: theme.colorScheme.onPrimary.withOpacity(0.6), // Color
+                    color: theme.colorScheme.onPrimary.withValues(alpha: 0.6), // Color
                   ),
               ],
             ),

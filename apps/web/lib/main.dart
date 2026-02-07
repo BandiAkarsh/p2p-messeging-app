@@ -1,27 +1,34 @@
-import 'package:flutter/material.dart'; // Flutter material widgets
-import 'package:flutter_riverpod/flutter_riverpod.dart'; // Riverpod
-import 'screens/chat_screen.dart'; // Chat screen
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ecomesh_services/ecomesh_services.dart';
+import 'screens/welcome_screen.dart';
+import 'screens/chat_screen.dart';
 
-void main() { // Web entry point
-  runApp(const ProviderScope(child: EcoMeshWebApp())); // Run with Riverpod
+void main() {
+  runApp(const ProviderScope(child: EcoMeshWebApp()));
 }
 
-class EcoMeshWebApp extends StatelessWidget { // Web app widget
-  const EcoMeshWebApp({super.key}); // Constructor
+class EcoMeshWebApp extends ConsumerWidget {
+  const EcoMeshWebApp({super.key});
 
   @override
-  Widget build(BuildContext context) { // Build UI
-    return MaterialApp( // Material app
-      title: 'EcoMesh Web', // App title
-      debugShowCheckedModeBanner: false, // Hide debug banner
-      theme: ThemeData( // Theme
-        colorScheme: ColorScheme.fromSeed( // Color scheme
-          seedColor: const Color(0xFF2D5A27), // Green seed
-          brightness: Brightness.dark, // Dark mode
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateProvider);
+    
+    return MaterialApp(
+      title: 'EcoMesh P2P Messenger',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF2D5A27),
+          brightness: Brightness.dark,
         ),
-        useMaterial3: true, // Material 3
+        useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xFF0D1F17),
       ),
-      home: const ChatScreen(), // Home screen
+      home: authState == AuthState.authenticated 
+          ? const ChatScreen() 
+          : const WelcomeScreen(),
     );
   }
 }
