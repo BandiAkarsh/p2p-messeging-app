@@ -1253,6 +1253,7 @@ file:///home/akarsh/project_2/packages/services/lib/ecomesh_services.dart
 file:///home/akarsh/project_2/packages/services/lib/identity_service.dart
 file:///home/akarsh/project_2/packages/services/lib/messaging_service.dart
 file:///home/akarsh/project_2/packages/services/lib/providers.dart
+file:///home/akarsh/project_2/packages/services/lib/security_manager.dart
 org-dartlang-sdk:///dart-sdk/lib/_http/crypto.dart
 org-dartlang-sdk:///dart-sdk/lib/_http/embedder_config.dart
 org-dartlang-sdk:///dart-sdk/lib/_http/http.dart
