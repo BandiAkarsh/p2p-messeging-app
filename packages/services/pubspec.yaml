@@ -1,19 +1,20 @@
-name: ecomesh_services                                                # Services package
-version: 1.0.0                                                         # Version
-description: Business logic services for EcoMesh                       # Description
+name: ecomesh_services # Services package
+version: 1.0.0 # Version
+description: Business logic services for EcoMesh # Description
 
-environment:                                                           # Dart SDK
-  sdk: '>=3.0.0 <4.0.0'                                                # Dart 3.0+
+environment: # Dart SDK
+  sdk: ">=3.0.0 <4.0.0" # Dart 3.0+
 
-dependencies:                                                          # Dependencies
-  ecomesh_core:                                                        # Core interfaces
-    path: ../core                                                      # Relative path
-  ecomesh_adapters:                                                    # Adapter implementations
-    path: ../adapters                                                  # Relative path
-  riverpod: ^2.5.1                                                     # State management
-  riverpod_annotation: ^2.3.5                                          # Riverpod code gen
+dependencies:
+  ecomesh_core:
+    path: ../core
+  ecomesh_adapters:
+    path: ../adapters
+  riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+  cryptography: ^2.7.0
 
-dev_dependencies:                                                      # Dev dependencies
-  build_runner: ^2.4.9                                                 # Build runner
-  riverpod_generator: ^2.4.0                                           # Riverpod generator
-  test: ^1.25.0                                                        # Testing
+dev_dependencies: # Dev dependencies
+  build_runner: ^2.4.9 # Build runner
+  riverpod_generator: ^2.4.0 # Riverpod generator
+  test: ^1.25.0 # Testing
