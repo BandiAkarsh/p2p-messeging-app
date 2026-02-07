@@ -1,0 +1,1 @@
+:  /home/akarsh/project_2/apps/web/web/index.html

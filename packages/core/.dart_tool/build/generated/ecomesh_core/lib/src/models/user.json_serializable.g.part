@@ -1,0 +1,52 @@
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
+      id: json['id'] as String,
+      username: json['username'] as String,
+      displayName: json['displayName'] as String?,
+      avatarUrl: json['avatarUrl'] as String?,
+      publicKey: json['publicKey'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      blockedPeers: (json['blockedPeers'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      preferences: json['preferences'] == null
+          ? const UserPreferences()
+          : UserPreferences.fromJson(
+              json['preferences'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'username': instance.username,
+      'displayName': instance.displayName,
+      'avatarUrl': instance.avatarUrl,
+      'publicKey': instance.publicKey,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'blockedPeers': instance.blockedPeers,
+      'preferences': instance.preferences,
+    };
+
+_$UserPreferencesImpl _$$UserPreferencesImplFromJson(
+        Map<String, dynamic> json) =>
+    _$UserPreferencesImpl(
+      aiTone: json['aiTone'] as String? ?? 'friendly',
+      notifications: json['notifications'] as bool? ?? true,
+      darkMode: json['darkMode'] as bool? ?? true,
+      language: json['language'] as String? ?? 'en',
+      e2eEncryption: json['e2eEncryption'] as bool? ?? true,
+    );
+
+Map<String, dynamic> _$$UserPreferencesImplToJson(
+        _$UserPreferencesImpl instance) =>
+    <String, dynamic>{
+      'aiTone': instance.aiTone,
+      'notifications': instance.notifications,
+      'darkMode': instance.darkMode,
+      'language': instance.language,
+      'e2eEncryption': instance.e2eEncryption,
+    };

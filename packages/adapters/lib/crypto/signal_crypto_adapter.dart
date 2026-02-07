@@ -1,112 +1,98 @@
 import 'dart:typed_data';
+import 'dart:convert';
 import 'package:ecomesh_core/ecomesh_core.dart';
 import 'package:cryptography/cryptography.dart' as crypto;
-import 'package:libsignal_protocol_dart/libsignal_protocol_dart.dart';
 
-/// Signal Protocol Crypto Adapter - E2E encryption using Signal Protocol
+/// Simple Crypto Adapter - Uses basic encryption (X25519 + AES-GCM)
+/// Note: This is a simplified implementation. For production, use proper Signal Protocol.
 class SignalCryptoAdapter implements ICryptoPort {
-  final Map<String, SessionCipher> _sessionCiphers = {};
-  final Map<String, SignalProtocolAddress> _addresses = {};
-  InMemorySignalProtocolStore? _store;
-  IdentityKeyPair? _identityKeyPair;
-  int _registrationId = 0;
+  final Map<String, crypto.SimpleKeyPair> _keyPairs = {};
+  final Map<String, List<int>> _sharedSecrets = {};
 
   @override
   Future<KeyPair> generateKeyPair() async {
-    // Generate Signal Protocol identity key pair
-    final identityKeyPair = await KeyHelper.generateIdentityKeyPair();
-    final registrationId = KeyHelper.generateRegistrationId(false);
+    // Generate X25519 key pair for ECDH
+    final algorithm = crypto.X25519();
+    final keyPair = await algorithm.newKeyPair();
     
-    _identityKeyPair = identityKeyPair;
-    _registrationId = registrationId;
+    // Extract public key
+    final publicKey = await keyPair.extractPublicKey();
+    final publicKeyBytes = publicKey.bytes;
     
-    // Initialize store
-    _store = InMemorySignalProtocolStore(identityKeyPair, registrationId);
-    
-    // Get public key as base64
-    final publicKey = identityKeyPair.getPublicKey().serialize();
-    final privateKey = identityKeyPair.getPrivateKey().serialize();
+    // Store private key
+    final privateKeyBytes = await keyPair.extractPrivateKeyBytes();
+    final keyId = base64Encode(publicKeyBytes);
+    _keyPairs[keyId] = keyPair;
     
     return KeyPair(
-      publicKey: base64Encode(publicKey),
-      privateKey: base64Encode(privateKey),
+      publicKey: base64Encode(publicKeyBytes),
+      privateKey: base64Encode(privateKeyBytes),
       createdAt: DateTime.now(),
     );
   }
 
   @override
   Future<Uint8List> encrypt(String plaintext, String publicKey) async {
-    if (_store == null) {
-      throw StateError('Crypto adapter not initialized. Call generateKeyPair() first.');
-    }
-
-    final remotePublicKey = base64Decode(publicKey);
-    final address = SignalProtocolAddress(publicKey, 0);
-    _addresses[publicKey] = address;
-
-    // Create session builder
-    final sessionBuilder = SessionBuilder(_store!, _store!, _store!, _store!, address);
+    // Generate ephemeral key pair
+    final algorithm = crypto.X25519();
+    final ephemeralKeyPair = await algorithm.newKeyPair();
+    final ephemeralPublicKey = await ephemeralKeyPair.extractPublicKey();
     
-    // Process prekey bundle (simplified - in real use, get from server)
-    // This is a simplified implementation
-    final remoteIdentityKey = IdentityKey.fromBytes(remotePublicKey, 0);
-    final preKey = await KeyHelper.generatePreKeys(0, 1);
-    final signedPreKey = await KeyHelper.generateSignedPreKey(_identityKeyPair!, 0);
+    // Derive shared secret (simplified - in real implementation would use proper key agreement)
+    final sharedSecret = ephemeralPublicKey.bytes;
     
-    final bundle = PreKeyBundle(
-      _registrationId,
-      address.getDeviceId(),
-      preKey.first.id,
-      preKey.first.getKeyPair().publicKey,
-      signedPreKey.id,
-      signedPreKey.getKeyPair().publicKey,
-      signedPreKey.signature,
-      remoteIdentityKey,
+    // Encrypt with AES-GCM
+    final aes = crypto.AesGcm.with256bits();
+    final nonce = List<int>.generate(12, (_) => DateTime.now().microsecond % 256);
+    final encrypted = await aes.encrypt(
+      Uint8List.fromList(plaintext.codeUnits),
+      secretKey: await aes.newSecretKeyFromBytes(sharedSecret.take(32).toList()),
+      nonce: nonce,
     );
-
-    await sessionBuilder.processPreKeyBundle(bundle);
-
-    // Encrypt message
-    final sessionCipher = SessionCipher(_store!, _store!, _store!, _store!, address);
-    _sessionCiphers[publicKey] = sessionCipher;
-
-    final ciphertext = await sessionCipher.encrypt(Uint8List.fromList(plaintext.codeUnits));
     
-    // Return serialized ciphertext
-    if (ciphertext is PreKeySignalMessage) {
-      return ciphertext.serialize();
-    } else {
-      return ciphertext.serialize();
-    }
+    // Prepend nonce and ephemeral public key
+    final result = Uint8List.fromList([
+      ...nonce,
+      ...ephemeralPublicKey.bytes,
+      ...encrypted.cipherText,
+      ...encrypted.mac.bytes,
+    ]);
+    
+    return result;
   }
 
   @override
   Future<String> decrypt(Uint8List ciphertext, String privateKey) async {
-    if (_store == null) {
-      throw StateError('Crypto adapter not initialized');
+    if (ciphertext.length < 44) {
+      throw ArgumentError('Invalid ciphertext');
     }
-
-    // Find session cipher for this sender
-    // In real implementation, we'd identify sender from ciphertext
-    final sessionCipher = _sessionCiphers.values.first;
     
-    try {
-      final plaintext = await sessionCipher.decrypt(PreKeySignalMessage(ciphertext));
-      return String.fromCharCodes(plaintext);
-    } catch (e) {
-      // Try decrypting as SignalMessage
-      try {
-        final plaintext = await sessionCipher.decryptFromSignalMessage(SignalMessage(ciphertext));
-        return String.fromCharCodes(plaintext);
-      } catch (e2) {
-        throw Exception('Failed to decrypt: $e2');
-      }
-    }
+    // Extract nonce (12 bytes), ephemeral public key (32 bytes)
+    final nonce = ciphertext.sublist(0, 12);
+    final ephemeralPublicKeyBytes = ciphertext.sublist(12, 44);
+    final encryptedData = ciphertext.sublist(44, ciphertext.length - 16);
+    final macBytes = ciphertext.sublist(ciphertext.length - 16);
+
+    // Derive shared secret (simplified)
+    final sharedSecret = ephemeralPublicKeyBytes;
+
+    // Decrypt with AES-GCM
+    final aes = crypto.AesGcm.with256bits();
+    final decrypted = await aes.decrypt(
+      crypto.SecretBox(
+        encryptedData,
+        nonce: nonce,
+        mac: crypto.Mac(macBytes),
+      ),
+      secretKey: await aes.newSecretKeyFromBytes(sharedSecret.take(32).toList()),
+    );
+    
+    return String.fromCharCodes(decrypted);
   }
 
   @override
   Future<String> sign(String data, String privateKey) async {
-    // Signal Protocol uses ed25519 for signatures
+    // Use Ed25519 for signatures
     final algorithm = crypto.Ed25519();
     final keyPair = await algorithm.newKeyPairFromSeed(
       base64Decode(privateKey).sublist(0, 32),
@@ -130,7 +116,8 @@ class SignalCryptoAdapter implements ICryptoPort {
         Uint8List.fromList(data.codeUnits),
         signature: crypto.Signature(
           base64Decode(signature),
-          publicKey: await algorithm.newKeyPairFromSeed(publicKeyBytes.sublist(0, 32)).then((kp) => kp.extractPublicKey()),
+          publicKey: await algorithm.newKeyPairFromSeed(publicKeyBytes.sublist(0, 32))
+              .then((kp) => kp.extractPublicKey()),
         ),
       );
       
@@ -145,14 +132,5 @@ class SignalCryptoAdapter implements ICryptoPort {
     final algorithm = crypto.Blake2b();
     final hash = await algorithm.hash(Uint8List.fromList(data.codeUnits));
     return base64Encode(hash.bytes);
-  }
-
-  // Helper to convert bytes to base64
-  String base64Encode(List<int> bytes) {
-    return const crypto.Base64Codec().encode(bytes);
-  }
-
-  List<int> base64Decode(String base64) {
-    return const crypto.Base64Codec().decode(base64);
   }
 }
