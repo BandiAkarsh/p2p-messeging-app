@@ -1,0 +1,21 @@
+{
+  "name": "ecomesh-ai-worker",
+  "version": "1.0.0",
+  "description": "AI processing worker for smart replies and translation",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "tsc",
+    "deploy": "wrangler deploy",
+    "test": "jest",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250204.0",
+    "typescript": "^5.7.3",
+    "wrangler": "^3.107.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "ecomesh-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Green P2P messenger with modular microservice architecture",
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "dev:mobile": "pnpm --filter ecomesh_mobile flutter run",
+    "dev:web": "pnpm --filter ecomesh_web flutter run -d chrome",
+    "dev:workers": "docker compose up",
+    "build:all": "pnpm build:packages && pnpm build:apps",
+    "build:packages": "pnpm --filter ecomesh_core pub get",
+    "build:apps": "pnpm build:mobile && pnpm build:web",
+    "build:mobile": "pnpm --filter ecomesh_mobile flutter build apk --release",
+    "build:web": "pnpm --filter ecomesh_web flutter build web --release",
+    "test": "pnpm test:packages && pnpm test:apps",
+    "test:packages": "pnpm --filter ecomesh_core test",
+    "test:apps": "pnpm --filter ecomesh_mobile flutter test",
+    "deploy:workers": "pnpm deploy:signaling && pnpm deploy:ai",
+    "deploy:signaling": "cd workers/signaling && wrangler deploy",
+    "deploy:ai": "cd workers/ai-worker && wrangler deploy",
+    "lint": "pnpm lint:dart && pnpm lint:ts",
+    "lint:dart": "pnpm --filter ecomesh_mobile flutter analyze",
+    "lint:ts": "pnpm --filter ecomesh-signaling-worker lint",
+    "format": "pnpm format:dart && pnpm format:ts",
+    "format:dart": "dart format .",
+    "format:ts": "prettier --write \"workers/**/*.ts\""
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.3",
+    "wrangler": "^3.107.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

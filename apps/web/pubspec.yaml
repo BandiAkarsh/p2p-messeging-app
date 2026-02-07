@@ -1,0 +1,27 @@
+name: ecomesh_web                                                     # Web app name
+description: EcoMesh P2P Messenger Web App                             # Description
+
+publish_to: 'none'                                                    # Don't publish
+
+version: 1.0.0+1                                                      # Version
+
+environment:                                                           # SDK constraints
+  sdk: '>=3.0.0 <4.0.0'                                                # Dart 3.0+
+
+dependencies:                                                          # Dependencies
+  flutter:                                                             # Flutter SDK
+    sdk: flutter                                                       # Flutter SDK
+  ecomesh_core:                                                        # Core package
+    path: ../../packages/core                                          # Relative path
+  ecomesh_services:                                                    # Services package
+    path: ../../packages/services                                      # Relative path
+  flutter_riverpod: ^2.5.1                                             # State management
+  go_router: ^14.1.0                                                   # Routing
+
+dev_dependencies:                                                      # Dev dependencies
+  flutter_test:                                                        # Testing
+    sdk: flutter                                                       # Flutter SDK
+  flutter_lints: ^4.0.0                                                # Lints
+
+flutter:                                                               # Flutter config
+  uses-material-design: true                                           # Material Design

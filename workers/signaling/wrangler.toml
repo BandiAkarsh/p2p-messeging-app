@@ -1,0 +1,25 @@
+name = "ecomesh-signaling"
+main = "dist/index.js"
+compatibility_date = "2025-02-04"
+compatibility_flags = ["nodejs_compat"]
+
+[env.production]
+name = "ecomesh-signaling-prod"
+
+[env.staging]
+name = "ecomesh-signaling-staging"
+
+[durable_objects]
+bindings = [
+  { name = "SIGNALING_ROOMS", class_name = "SignalingRoom" }
+]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["SignalingRoom"]
+
+[vars]
+ENVIRONMENT = "development"
+
+[env.production.vars]
+ENVIRONMENT = "production"

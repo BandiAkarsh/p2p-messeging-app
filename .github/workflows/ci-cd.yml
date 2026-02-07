@@ -1,0 +1,165 @@
+name: CI/CD Pipeline # Workflow name displayed in GitHub Actions tab
+
+on: # Event triggers definition
+  push: # Trigger on push events
+    branches: [main, develop] # Only on main and develop branches
+  pull_request: # Trigger on pull requests
+    branches: [main] # Only for PRs targeting main
+
+env:
+  NODE_VERSION: "20"
+  FLUTTER_VERSION: "3.27.3"
+
+jobs: # Job definitions start here
+  lint: # Job ID for linting
+    name: Lint & Type Check # Display name in UI
+    runs-on: ubuntu-latest # GitHub-hosted runner OS
+    steps: # Sequential steps
+      - name: Checkout code # Step name for clarity
+        uses: actions/checkout@v4 # Official checkout action (gets code)
+
+      - name: Setup Node.js # Setup Node runtime
+        uses: actions/setup-node@v4 # Node setup action
+        with: # Action parameters
+          node-version: ${{ env.NODE_VERSION }} # Use version from env var
+          cache: "npm" # Enable npm caching for speed
+
+      - name: Setup pnpm # Install pnpm
+        uses: pnpm/action-setup@v3 # pnpm setup action
+        with: # Configuration
+          version: 9 # pnpm version
+
+      - name: Install Node dependencies # Install worker deps
+        run: | # Multi-line shell command
+          cd workers/signaling                                     # Navigate to worker directory
+          pnpm install --frozen-lockfile                           # Clean install (uses pnpm-lock)
+
+      - name: TypeScript type check # Verify TypeScript types
+        run: | # Multi-line command
+          cd workers/signaling                                     # Navigate to worker dir
+          pnpm tsc --noEmit                                        # Type check without output files
+
+      - name: Setup Flutter # Install Flutter SDK
+        uses: subosito/flutter-action@v2 # Community Flutter action
+        with: # Action configuration
+          flutter-version: ${{ env.FLUTTER_VERSION }} # Specific Flutter version
+          channel: "stable" # Use stable channel
+
+      - name: Install Dart dependencies # Get Flutter packages
+        run: | # Multi-line shell
+          cd packages/core                                         # Navigate to core package
+          dart pub get                                             # Download Dart dependencies
+
+      - name: Dart analysis # Static analysis
+        run: | # Multi-line command
+          cd apps/mobile                                           # Navigate to mobile app
+          flutter analyze                                          # Run Dart analyzer
+
+  test: # Job ID for testing
+    name: Run Tests # Display name
+    runs-on: ubuntu-latest # Ubuntu runner
+    needs: lint # Wait for lint job to pass first
+    steps: # Test execution steps
+      - name: Checkout code # Get repository code
+        uses: actions/checkout@v4 # Official checkout
+
+      - name: Setup Flutter # Install Flutter
+        uses: subosito/flutter-action@v2 # Flutter setup action
+        with: # Configuration
+          flutter-version: ${{ env.FLUTTER_VERSION }} # From env variable
+          channel: "stable" # Stable releases only
+
+      - name: Run Dart tests # Execute test suite
+        run: | # Shell commands
+          cd packages/core                                         # Navigate to package
+          dart test                                               # Run all tests
+
+  build-mobile: # Job for mobile builds
+    name: Build Mobile Apps # Display name
+    runs-on: macos-latest # macOS for iOS builds
+    needs: [lint, test] # Wait for lint and test
+    if: github.ref == 'refs/heads/main' # Only on main branch
+    steps: # Build steps
+      - name: Checkout code # Get code
+        uses: actions/checkout@v4 # Official action
+
+      - name: Setup Flutter # Install Flutter SDK
+        uses: subosito/flutter-action@v2 # Setup action
+        with: # Config
+          flutter-version: ${{ env.FLUTTER_VERSION }} # Version from env
+          channel: "stable" # Stable channel
+
+      - name: Build Android APK # Create Android release
+        run: | # Commands
+          cd apps/mobile                                           # Navigate to app
+          flutter build apk --release                              # Build release APK
+
+      - name: Upload APK # Save build artifact
+        uses: actions/upload-artifact@v4 # Artifact upload action
+        with: # Configuration
+          name: android-release # Artifact name
+          path: apps/mobile/build/app/outputs/flutter-apk/*.apk # Path to APK file
+
+  build-web: # Job for web build
+    name: Build Web App # Display name
+    runs-on: ubuntu-latest # Ubuntu runner
+    needs: [lint, test] # Dependencies
+    steps: # Build steps
+      - name: Checkout code # Get source
+        uses: actions/checkout@v4 # Checkout action
+
+      - name: Setup Flutter # Install SDK
+        uses: subosito/flutter-action@v2 # Flutter action
+        with: # Config
+          flutter-version: ${{ env.FLUTTER_VERSION }} # Version
+          channel: "stable" # Stable
+
+      - name: Build Web # Compile web app
+        run: | # Commands
+          cd apps/web                                              # Navigate to web app
+          flutter build web --release                              # Release build
+
+      - name: Upload Web Build # Save artifacts
+        uses: actions/upload-artifact@v4 # Upload action
+        with: # Config
+          name: web-release # Artifact name
+          path: apps/web/build/web/** # Web build directory
+
+  deploy-workers:
+    name: Deploy Cloudflare Workers
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    if: false
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Install Wrangler
+        run: pnpm install -g wrangler@^3.107.3
+
+      - name: Deploy Signaling Worker
+        run: |
+          cd workers/signaling
+          pnpm install --frozen-lockfile
+          pnpm wrangler deploy --env production
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - name: Deploy AI Worker
+        run: |
+          cd workers/ai-worker
+          pnpm install --frozen-lockfile
+          pnpm wrangler deploy --env production
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

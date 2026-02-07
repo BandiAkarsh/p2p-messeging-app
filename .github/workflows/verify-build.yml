@@ -1,0 +1,59 @@
+name: Build Verification # Workflow name
+
+on: # Triggers
+  workflow_dispatch: # Manual trigger only
+
+jobs: # Jobs
+  verify-build: # Job name
+    name: Verify All Builds # Display name
+    runs-on: ubuntu-latest # Runner
+    steps: # Steps
+      - name: Checkout code # Get code
+        uses: actions/checkout@v4 # Checkout action
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.27.3"
+          channel: "stable"
+
+      - name: Build All Packages # Build packages
+        run: | # Commands
+          cd packages/core                                         # Navigate
+          dart pub get                                             # Get deps
+          dart analyze                                             # Analyze
+
+      - name: Build Mobile # Mobile build
+        run: | # Commands
+          cd apps/mobile                                           # Navigate
+          flutter pub get                                          # Get packages
+          flutter build apk --debug                                # Debug build (faster)
+
+      - name: Build Web # Web build
+        run: | # Commands
+          cd apps/web                                              # Navigate
+          flutter pub get                                          # Get packages
+          flutter build web --debug                                # Debug build
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Install Wrangler
+        run: pnpm install -g wrangler@^3.107.3
+
+      - name: Verify Signaling Worker Build
+        run: |
+          cd workers/signaling
+          pnpm install --frozen-lockfile
+          pnpm run build
+
+      - name: Verify AI Worker Build
+        run: |
+          cd workers/ai-worker
+          pnpm install --frozen-lockfile
+          pnpm run build
+
+      - name: Report Status
+        run: echo "✅ All builds successful - ready for deployment"

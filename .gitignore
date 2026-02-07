@@ -1,0 +1,31 @@
+# pnpm
+node_modules/                                                         # Dependencies
+.pnpm-store/                                                          # pnpm store
+pnpm-lock.yaml                                                        # Lock file (generated)
+
+# Node
+package-lock.json                                                     # npm lock (not using)
+yarn.lock                                                             # yarn lock (not using)
+
+# Workers
+workers/*/dist/                                                       # Compiled JS
+workers/*/.wrangler/                                                  # Wrangler cache
+
+# Flutter
+.dart_tool/                                                           # Dart build cache
+.flutter-plugins                                                      # Plugin list
+.flutter-plugins-dependencies                                         # Plugin deps
+build/                                                                # Build outputs
+*.iml                                                                 # IntelliJ files
+.idea/                                                                # IDE config
+
+# OS
+.DS_Store                                                             # macOS
+Thumbs.db                                                             # Windows
+
+# Logs
+*.log                                                                 # Log files
+
+# Environment
+.env                                                                  # Local env
+.env.local                                                            # Local env

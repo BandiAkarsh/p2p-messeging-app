@@ -1,0 +1,26 @@
+{                                                                       # Start of Turbo configuration for monorepo task orchestration
+  "$schema": "https://turbo.build/schema.json",                         # JSON schema for IDE validation and autocomplete
+  "globalDependencies": ["**/.env.*local"],                              # Files that when changed invalidate all caches
+  "pipeline": {                                                         # Define task execution pipeline
+    "build": {                                                          # Build task configuration
+      "dependsOn": ["^build"],                                           # Build dependencies first (topological order)
+      "outputs": [".dart_tool/**", "build/**"],                         # Cache these output directories
+      "cache": true                                                      # Enable caching for faster rebuilds
+    },                                                                   # End build task
+    "test": {                                                           # Test task configuration
+      "dependsOn": ["build"],                                            # Tests need build artifacts first
+      "outputs": ["coverage/**"],                                        # Cache test coverage reports
+      "cache": true                                                      # Enable test result caching
+    },                                                                   # End test task
+    "lint": {                                                           # Lint task configuration
+      "cache": true                                                      # Cache lint results
+    },                                                                   # End lint task
+    "dev": {                                                            # Development task
+      "cache": false,                                                    # Don't cache dev mode (always fresh)
+      "persistent": true                                                 # Keep process running (long-running dev server)
+    }                                                                    # End dev task
+  },                                                                     # End pipeline definition
+  "remoteCache": {                                                      # Remote caching configuration
+    "enabled": false                                                    # Disable remote caching (local only)
+  }                                                                      # End remoteCache
+}                                                                       # End of turbo.json

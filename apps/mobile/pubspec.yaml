@@ -1,0 +1,37 @@
+name: ecomesh_mobile                                                  # Mobile app name
+description: EcoMesh P2P Messenger Mobile App                          # App description
+
+publish_to: 'none'                                                    # Don't publish to pub.dev
+
+version: 1.0.0+1                                                      # Version with build number
+
+environment:                                                           # Dart SDK
+  sdk: '>=3.0.0 <4.0.0'                                                # Dart 3.0+
+
+dependencies:                                                          # Runtime dependencies
+  flutter:                                                             # Flutter SDK
+    sdk: flutter                                                       # Use Flutter SDK
+  ecomesh_core:                                                        # Core interfaces
+    path: ../../packages/core                                          # Relative path
+  ecomesh_services:                                                    # Business logic
+    path: ../../packages/services                                      # Relative path
+  ecomesh_adapters:                                                    # Adapters
+    path: ../../packages/adapters                                      # Relative path
+  flutter_riverpod: ^2.5.1                                             # Riverpod for Flutter
+  go_router: ^14.1.0                                                   # Navigation routing
+  flutter_screenutil: ^5.9.0                                           # Responsive design
+  intl: ^0.19.0                                                        # Internationalization
+  flutter_local_notifications: ^17.1.2                                 # Push notifications
+  permission_handler: ^11.3.1                                          # Permissions
+
+dev_dependencies:                                                      # Dev dependencies
+  flutter_test:                                                        # Flutter testing
+    sdk: flutter                                                       # Flutter SDK
+  flutter_lints: ^4.0.0                                                # Dart lints
+  build_runner: ^2.4.9                                                 # Code generation
+
+flutter:                                                               # Flutter configuration
+  uses-material-design: true                                           # Enable Material Design
+  assets:                                                              # Asset definitions
+    - assets/images/                                                   # Image assets
+    - assets/fonts/                                                    # Font assets

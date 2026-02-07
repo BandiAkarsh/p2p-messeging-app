@@ -1,0 +1,25 @@
+name: ecomesh-messenger
+
+services:
+  signaling-worker:
+    build:
+      context: ./workers/signaling
+      dockerfile: Dockerfile
+    ports:
+      - "8787:8787"
+    environment:
+      - NODE_ENV=development
+      - DURABLE_OBJECTS_NAMESPACE=SIGNALING
+    # Remove volumes that overwrite node_modules
+    # Volumes are causing workerd binary to be missing
+
+  ai-worker:
+    build:
+      context: ./workers/ai-worker
+      dockerfile: Dockerfile
+    ports:
+      - "8788:8788"
+    environment:
+      - NODE_ENV=development
+      - WORKERS_AI_TOKEN=${WORKERS_AI_TOKEN:-}
+    # Remove volumes that overwrite node_modules
