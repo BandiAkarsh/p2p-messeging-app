@@ -7,7 +7,6 @@ import 'package:cryptography/cryptography.dart' as crypto;
 /// Note: This is a simplified implementation. For production, use proper Signal Protocol.
 class SignalCryptoAdapter implements ICryptoPort {
   final Map<String, crypto.SimpleKeyPair> _keyPairs = {};
-  final Map<String, List<int>> _sharedSecrets = {};
 
   @override
   Future<KeyPair> generateKeyPair() async {

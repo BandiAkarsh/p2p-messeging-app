@@ -1,6 +1,7 @@
 name: ecomesh_adapters
 version: 1.0.0
 description: Swappable adapter implementations for EcoMesh
+publish_to: none
 
 environment:
   sdk: ">=3.0.0 <4.0.0"

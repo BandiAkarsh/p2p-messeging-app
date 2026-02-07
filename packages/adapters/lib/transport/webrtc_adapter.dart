@@ -1,21 +1,22 @@
-import 'dart:async';                                                 // Async support
-import 'dart:convert';                                               // JSON encoding
-import 'dart:typed_data';                                            // Binary data
-import 'package:ecomesh_core/ecomesh_core.dart';                     // Core interfaces
-import 'package:web_socket_channel/web_socket_channel.dart';         // WebSocket support
-import 'package:http/http.dart' as http;                             // HTTP client
+import 'dart:async';
+import 'dart:convert';
+import 'package:ecomesh_core/ecomesh_core.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 /// WebRTC Transport Adapter - Uses WebRTC for P2P communication
-class WebRTCAdapter implements ITransportPort {                       // Implements transport interface
-  final String signalingUrl;                                          // Signaling server URL
-  WebSocketChannel? _channel;                                         // WebSocket connection
-  final _messageController = StreamController<EncryptedMessage>.broadcast(); // Message stream
-  TransportStatus _status = TransportStatus.disconnected;             // Current status
-  String? _currentPeerId;                                             // Connected peer ID
+class WebRTCAdapter implements ITransportPort {
+  final String signalingUrl;
+  WebSocketChannel? _channel;
+  final _messageController = StreamController<EncryptedMessage>.broadcast();
+  TransportStatus _status = TransportStatus.disconnected;
+  String? _currentPeerId;
 
-  WebRTCAdapter({                                                     // Constructor
-    required this.signalingUrl,                                       // Required signaling URL
+  WebRTCAdapter({
+    required this.signalingUrl,
   });
+
+  /// Get currently connected peer ID
+  String? get currentPeerId => _currentPeerId;
 
   @override
   Future<void> connect(String peerId) async {                         // Connect to peer

@@ -20,7 +20,6 @@ class SecureStorageAdapter implements IStoragePort {
   // Storage namespace to avoid collisions
   static const String _namespace = 'ecomesh_secure_';
   static const String _keyStorage = '${_namespace}master_key';
-  static const String _saltStorage = '${_namespace}salt';
 
   /// Initialize storage with encryption
   Future<void> initialize() async {
@@ -145,7 +144,7 @@ class SecureStorageAdapter implements IStoragePort {
       
       // Apply limit
       if (criteria.limit != null && results.length > criteria.limit!) {
-        return results.sublist(0, criteria.limit) as List<T>;
+        return results.sublist(0, criteria.limit);
       }
       
       return results;

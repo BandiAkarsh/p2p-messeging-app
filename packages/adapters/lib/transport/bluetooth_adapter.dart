@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:ecomesh_core/ecomesh_core.dart';
 
 /// Bluetooth LE Transport Adapter - For local P2P without internet
@@ -9,6 +8,9 @@ class BluetoothAdapter implements ITransportPort {
   String? _currentPeerId;
   bool _isScanning = false;
   final Set<String> _discoveredPeers = {};
+
+  /// Get currently connected peer ID
+  String? get currentPeerId => _currentPeerId;
 
   @override
   Future<void> connect(String peerId) async {

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:ecomesh_core/ecomesh_core.dart';
 
 /// Mock Transport Adapter - For testing without real network
@@ -8,6 +7,9 @@ class MockTransportAdapter implements ITransportPort {
   TransportStatus _status = TransportStatus.disconnected;
   String? _currentPeerId;
   final List<EncryptedMessage> _messageQueue = [];
+
+  /// Get currently connected peer ID
+  String? get currentPeerId => _currentPeerId;
 
   @override
   Future<void> connect(String peerId) async {
