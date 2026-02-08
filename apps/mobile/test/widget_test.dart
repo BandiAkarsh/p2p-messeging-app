@@ -16,6 +16,6 @@ void main() {
     await tester.pumpWidget(const ProviderScope(child: EcoMeshApp()));
 
     // Verify that the app title is displayed.
-    expect(find.text('EcoMesh'), findsOneWidget);
+    expect(find.text('EcoMesh Chat'), findsOneWidget);
   });
 }
