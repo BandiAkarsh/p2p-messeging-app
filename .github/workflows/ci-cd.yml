@@ -203,6 +203,9 @@ jobs: # Job definitions start here
         run: |
           cd workers/signaling
           pnpm install --frozen-lockfile
+          # Deploy base worker first (creates if doesn't exist)
+          pnpm wrangler deploy || true
+          # Then deploy production environment
           pnpm wrangler deploy --env production
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_SIGNALING_TOKEN }}
@@ -212,6 +215,9 @@ jobs: # Job definitions start here
         run: |
           cd workers/ai-worker
           pnpm install --frozen-lockfile
+          # Deploy base worker first (creates if doesn't exist)
+          pnpm wrangler deploy || true
+          # Then deploy production environment
           pnpm wrangler deploy --env production
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_AI_TOKEN }}
