@@ -82,7 +82,7 @@ packages:
     source: hosted
     version: "2.17.0"
   ecomesh_adapters:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "../../packages/adapters"
       relative: true

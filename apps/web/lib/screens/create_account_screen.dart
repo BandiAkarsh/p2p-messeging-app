@@ -74,11 +74,11 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: const [
+            colors: [
               Color(0xFF0D1F17),
               Color(0xFF1A3A2B),
               Color(0xFF0D1F17),
@@ -118,7 +118,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                 const SizedBox(height: 40),
 
                 // Features list
-                _FeatureItem(
+                const _FeatureItem(
                   icon: Icons.shield,
                   title: 'Decentralized Identity',
                   description:
@@ -127,7 +127,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
 
                 const SizedBox(height: 20),
 
-                _FeatureItem(
+                const _FeatureItem(
                   icon: Icons.key,
                   title: '12-Word Recovery Phrase',
                   description: 'Write it down to recover your account anywhere',
@@ -135,7 +135,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
 
                 const SizedBox(height: 20),
 
-                _FeatureItem(
+                const _FeatureItem(
                   icon: Icons.lock,
                   title: 'End-to-End Encryption',
                   description: 'Only you and your contacts can read messages',

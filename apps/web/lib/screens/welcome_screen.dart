@@ -12,11 +12,11 @@ class WelcomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: const [
+            colors: [
               Color(0xFF0D1F17),
               Color(0xFF1A3A2B),
               Color(0xFF0D1F17),

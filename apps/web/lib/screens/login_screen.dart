@@ -102,11 +102,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: const [
+            colors: [
               Color(0xFF0D1F17),
               Color(0xFF1A3A2B),
               Color(0xFF0D1F17),
