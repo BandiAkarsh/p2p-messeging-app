@@ -100,6 +100,7 @@ class MessagingService {
 
         controller.add(message); // Add to stream
       } catch (e) {
+        // ignore: avoid_print
         print('Error decrypting message: $e'); // Log error
       }
     });

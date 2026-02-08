@@ -144,7 +144,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           await aiService.generateReply(aiContext); // Get AI reply
       _messageController.text = suggestion; // Fill input
     } catch (e) {
-      if (!context.mounted) return;
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         // Show error
         SnackBar(content: Text('AI unavailable: $e')), // Error message
