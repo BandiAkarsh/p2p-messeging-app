@@ -218,6 +218,12 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "flutter_lints",
+      "rootUri": "file:///home/akarsh/.pub-cache/hosted/pub.dev/flutter_lints-4.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
       "name": "flutter_web_plugins",
       "rootUri": "file:///home/akarsh/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
@@ -288,6 +294,12 @@
       "rootUri": "file:///home/akarsh/.pub-cache/hosted/pub.dev/libsignal_protocol_dart-0.7.1",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "lints",
+      "rootUri": "file:///home/akarsh/.pub-cache/hosted/pub.dev/lints-4.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
     },
     {
       "name": "logging",
@@ -662,7 +674,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2026-02-08T16:52:45.210280Z",
+  "generated": "2026-02-08T18:23:50.095572Z",
   "generator": "pub",
   "generatorVersion": "3.6.2",
   "flutterRoot": "file:///home/akarsh/flutter",
