@@ -11,7 +11,8 @@ class CreateAccountScreen extends ConsumerStatefulWidget {
   const CreateAccountScreen({super.key});
 
   @override
-  ConsumerState<CreateAccountScreen> createState() => _CreateAccountScreenState();
+  ConsumerState<CreateAccountScreen> createState() =>
+      _CreateAccountScreenState();
 }
 
 class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
@@ -27,13 +28,13 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
     try {
       final identityService = ref.read(identityServiceProvider);
       final storage = ref.read(storageProvider);
-      
+
       // Generate identity
       final identity = await identityService.generateIdentity();
-      
+
       // Save identity securely
       await (storage as SecureStorageAdapter).saveUserIdentity(identity);
-      
+
       // Create user object
       final user = User(
         id: identity['userId']!,
@@ -42,10 +43,10 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
         publicKey: identity['publicKey']!,
         createdAt: DateTime.now(),
       );
-      
+
       // Update auth state
       ref.read(currentUserProvider.notifier).setUser(user);
-      
+
       // Navigate to backup phrase screen
       if (mounted) {
         Navigator.pushReplacement(
@@ -77,10 +78,10 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              const Color(0xFF0D1F17),
-              const Color(0xFF1A3A2B),
-              const Color(0xFF0D1F17),
+            colors: const [
+              Color(0xFF0D1F17),
+              Color(0xFF1A3A2B),
+              Color(0xFF0D1F17),
             ],
           ),
         ),
@@ -91,7 +92,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 20),
-                
+
                 // Back button
                 Align(
                   alignment: Alignment.centerLeft,
@@ -100,9 +101,9 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
                   ),
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Title
                 const Text(
                   'Create Account',
@@ -113,34 +114,35 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                     color: Colors.white,
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Features list
                 _FeatureItem(
                   icon: Icons.shield,
                   title: 'Decentralized Identity',
-                  description: 'Your identity is generated locally on your device',
+                  description:
+                      'Your identity is generated locally on your device',
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 _FeatureItem(
                   icon: Icons.key,
                   title: '12-Word Recovery Phrase',
                   description: 'Write it down to recover your account anywhere',
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 _FeatureItem(
                   icon: Icons.lock,
                   title: 'End-to-End Encryption',
                   description: 'Only you and your contacts can read messages',
                 ),
-                
+
                 const Spacer(),
-                
+
                 // Error message
                 if (_error != null)
                   Container(
@@ -155,9 +157,9 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                
+
                 if (_error != null) const SizedBox(height: 16),
-                
+
                 // Create button
                 Container(
                   decoration: BoxDecoration(
@@ -191,7 +193,8 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                                 width: 20,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation(Colors.white),
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.white),
                                 ),
                               )
                             : const Text(
@@ -207,7 +210,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
               ],
             ),

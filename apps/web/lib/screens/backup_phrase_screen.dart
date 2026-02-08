@@ -17,17 +17,17 @@ class BackupPhraseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final words = mnemonic.split(' ');
-    
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              const Color(0xFF0D1F17),
-              const Color(0xFF1A3A2B),
-              const Color(0xFF0D1F17),
+            colors: const [
+              Color(0xFF0D1F17),
+              Color(0xFF1A3A2B),
+              Color(0xFF0D1F17),
             ],
           ),
         ),
@@ -38,7 +38,7 @@ class BackupPhraseScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 40),
-                
+
                 // Warning icon
                 Container(
                   width: 80,
@@ -53,9 +53,9 @@ class BackupPhraseScreen extends StatelessWidget {
                     color: Colors.orange,
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Title
                 const Text(
                   'Save Your Recovery Phrase',
@@ -66,9 +66,9 @@ class BackupPhraseScreen extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Warning text
                 Text(
                   'Write these 12 words down in order. They are the only way to recover your account. Never share them with anyone!',
@@ -78,9 +78,9 @@ class BackupPhraseScreen extends StatelessWidget {
                     color: Colors.white.withValues(alpha: 0.7),
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Mnemonic grid
                 Container(
                   padding: const EdgeInsets.all(20),
@@ -111,15 +111,17 @@ class BackupPhraseScreen extends StatelessWidget {
                           tooltip: 'Copy phrase',
                         ),
                       ),
-                      
+
                       // Words grid
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
                         children: List.generate(12, (index) {
                           return Container(
-                            width: (MediaQuery.of(context).size.width - 104) / 3,
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                            width:
+                                (MediaQuery.of(context).size.width - 104) / 3,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 10),
                             decoration: BoxDecoration(
                               color: Colors.white.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
@@ -152,9 +154,9 @@ class BackupPhraseScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                
+
                 const Spacer(),
-                
+
                 // Continue button
                 Container(
                   decoration: BoxDecoration(
@@ -196,7 +198,7 @@ class BackupPhraseScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
               ],
             ),

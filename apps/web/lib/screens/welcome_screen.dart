@@ -16,10 +16,10 @@ class WelcomeScreen extends ConsumerWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              const Color(0xFF0D1F17),
-              const Color(0xFF1A3A2B),
-              const Color(0xFF0D1F17),
+            colors: const [
+              Color(0xFF0D1F17),
+              Color(0xFF1A3A2B),
+              Color(0xFF0D1F17),
             ],
           ),
         ),
@@ -30,7 +30,7 @@ class WelcomeScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Spacer(flex: 2),
-                
+
                 // Logo/Icon with glass effect
                 Center(
                   child: Container(
@@ -61,9 +61,9 @@ class WelcomeScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // App name
                 const Text(
                   'EcoMesh',
@@ -75,9 +75,9 @@ class WelcomeScreen extends ConsumerWidget {
                     letterSpacing: 1.5,
                   ),
                 ),
-                
+
                 const SizedBox(height: 8),
-                
+
                 // Tagline
                 Text(
                   'Green P2P Messenger',
@@ -88,9 +88,9 @@ class WelcomeScreen extends ConsumerWidget {
                     letterSpacing: 0.5,
                   ),
                 ),
-                
+
                 const Spacer(flex: 3),
-                
+
                 // Create Account Button
                 _GlassButton(
                   text: 'Create Account',
@@ -104,9 +104,9 @@ class WelcomeScreen extends ConsumerWidget {
                   },
                   isPrimary: true,
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Login Button
                 _GlassButton(
                   text: 'I Already Have an Account',
@@ -120,12 +120,13 @@ class WelcomeScreen extends ConsumerWidget {
                   },
                   isPrimary: false,
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Decentralized badge
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(20),
@@ -154,7 +155,7 @@ class WelcomeScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 20),
               ],
             ),

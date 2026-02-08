@@ -15,7 +15,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final List<TextEditingController> _wordControllers = 
+  final List<TextEditingController> _wordControllers =
       List.generate(12, (_) => TextEditingController());
   bool _isLoading = false;
   String? _error;
@@ -28,8 +28,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     try {
       // Collect words
-      final words = _wordControllers.map((c) => c.text.trim().toLowerCase()).toList();
-      
+      final words =
+          _wordControllers.map((c) => c.text.trim().toLowerCase()).toList();
+
       // Validate all words filled
       if (words.any((w) => w.isEmpty)) {
         setState(() {
@@ -37,25 +38,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         });
         return;
       }
-      
+
       final mnemonic = words.join(' ');
-      
+
       final identityService = ref.read(identityServiceProvider);
       final storage = ref.read(storageProvider);
-      
+
       // Recover identity
       final identity = await identityService.recoverIdentity(mnemonic);
-      
+
       if (identity == null) {
         setState(() {
           _error = 'Invalid recovery phrase. Please check your words.';
         });
         return;
       }
-      
+
       // Save recovered identity
       await (storage as SecureStorageAdapter).saveUserIdentity(identity);
-      
+
       // Create user object
       final user = User(
         id: identity['userId']!,
@@ -64,10 +65,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         publicKey: identity['publicKey']!,
         createdAt: DateTime.now(),
       );
-      
+
       // Update auth state
       ref.read(currentUserProvider.notifier).setUser(user);
-      
+
       // Navigate to chat
       if (mounted) {
         Navigator.pushAndRemoveUntil(
@@ -105,10 +106,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              const Color(0xFF0D1F17),
-              const Color(0xFF1A3A2B),
-              const Color(0xFF0D1F17),
+            colors: const [
+              Color(0xFF0D1F17),
+              Color(0xFF1A3A2B),
+              Color(0xFF0D1F17),
             ],
           ),
         ),
@@ -119,7 +120,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 20),
-                
+
                 // Back button
                 Align(
                   alignment: Alignment.centerLeft,
@@ -128,9 +129,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
                   ),
                 ),
-                
+
                 const SizedBox(height: 20),
-                
+
                 // Title
                 const Text(
                   'Recover Account',
@@ -141,9 +142,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     color: Colors.white,
                   ),
                 ),
-                
+
                 const SizedBox(height: 8),
-                
+
                 Text(
                   'Enter your 12-word recovery phrase',
                   textAlign: TextAlign.center,
@@ -152,9 +153,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     color: Colors.white.withValues(alpha: 0.7),
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Mnemonic grid
                 Expanded(
                   child: Container(
@@ -167,7 +168,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                     child: GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         childAspectRatio: 2.5,
                         crossAxisSpacing: 8,
@@ -202,10 +204,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   ),
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 4),
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 4),
                                   ),
-                                  textInputAction: index < 11 
-                                      ? TextInputAction.next 
+                                  textInputAction: index < 11
+                                      ? TextInputAction.next
                                       : TextInputAction.done,
                                   onSubmitted: (_) {
                                     if (index < 11) {
@@ -223,9 +226,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Error message
                 if (_error != null)
                   Container(
@@ -240,9 +243,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                
+
                 if (_error != null) const SizedBox(height: 16),
-                
+
                 // Recover button
                 Container(
                   decoration: BoxDecoration(
@@ -269,7 +272,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 width: 20,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation(Colors.white),
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.white),
                                 ),
                               )
                             : const Text(
@@ -285,7 +289,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
               ],
             ),
