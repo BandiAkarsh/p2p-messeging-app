@@ -3,19 +3,9 @@ main = "dist/index.js"
 compatibility_date = "2025-02-04"
 compatibility_flags = ["nodejs_compat"]
 
-[env.production]
-name = "ecomesh-ai"
-
-[env.staging]
-name = "ecomesh-ai-staging"
-
 [ai]
 binding = "AI"
 
 [vars]
-ENVIRONMENT = "development"
-MAX_TOKENS = "256"
-
-[env.production.vars]
 ENVIRONMENT = "production"
 MAX_TOKENS = "512"

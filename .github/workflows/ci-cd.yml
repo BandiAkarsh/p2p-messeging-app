@@ -203,7 +203,7 @@ jobs: # Job definitions start here
         run: |
           cd workers/signaling
           pnpm install --frozen-lockfile
-          pnpm wrangler deploy --env=""
+          pnpm wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -212,7 +212,7 @@ jobs: # Job definitions start here
         run: |
           cd workers/ai-worker
           pnpm install --frozen-lockfile
-          pnpm wrangler deploy --env=""
+          pnpm wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
