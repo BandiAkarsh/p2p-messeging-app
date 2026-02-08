@@ -9,8 +9,14 @@ import 'package:riverpod/riverpod.dart';
 
 // Transport Provider - Swappable transport implementation
 final transportProvider = Provider<ITransportPort>((ref) {
+  // Use environment variable if available, otherwise fallback to default
+  // Note: Signaling usually requires wss:// for WebSockets
+  const signalingUrl = String.fromEnvironment(
+    'SIGNALING_URL',
+    defaultValue: 'wss://ecomesh-signaling.akarshbandi82.workers.dev',
+  );
   return WebRTCAdapter(
-    signalingUrl: 'wss://signaling.ecomesh.workers.dev',
+    signalingUrl: signalingUrl,
   );
 });
 
@@ -26,8 +32,12 @@ final cryptoProvider = Provider<ICryptoPort>((ref) {
 
 // AI Provider - Cloudflare AI
 final aiProvider = Provider<IAIPort>((ref) {
+  const aiUrl = String.fromEnvironment(
+    'AI_URL',
+    defaultValue: 'https://ecomesh-ai.akarshbandi82.workers.dev',
+  );
   return CloudflareAIAdapter(
-    baseUrl: 'https://ai.ecomesh.workers.dev',
+    baseUrl: aiUrl,
   );
 });
 
@@ -65,16 +75,15 @@ final aiServiceProvider = Provider<AIService>((ref) {
 // Messages Stream Provider - Reactive message stream
 final messagesStreamProvider = StreamProvider<List<Message>>((ref) {
   final service = ref.watch(messagingServiceProvider);
-  return service.incomingMessages
-      .map((msg) => [msg])
-      .asyncExpand((msg) async* {
-        final history = await service.getConversation(msg.first.recipientId);
-        yield history;
-      });
+  return service.incomingMessages.map((msg) => [msg]).asyncExpand((msg) async* {
+    final history = await service.getConversation(msg.first.recipientId);
+    yield history;
+  });
 });
 
 // Conversation Provider - For specific peer
-final conversationProvider = FutureProvider.family<List<Message>, String>((ref, peerId) async {
+final conversationProvider =
+    FutureProvider.family<List<Message>, String>((ref, peerId) async {
   final service = ref.watch(messagingServiceProvider);
   return service.getConversation(peerId);
 });

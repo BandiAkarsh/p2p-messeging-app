@@ -126,22 +126,61 @@ jobs: # Job definitions start here
           flutter-version: ${{ env.FLUTTER_VERSION }} # Version
           channel: "stable" # Stable
 
-      - name: Build Web # Compile web app
-        run: | # Commands
-          cd apps/web                                              # Navigate to web app
-          flutter build web --release                              # Release build
+      - name: Build Web
+        run: |
+          cd apps/web
+          flutter build web --release --wasm \
+            --dart-define=SIGNALING_URL=wss://ecomesh-signaling.akarshbandi82.workers.dev \
+            --dart-define=AI_URL=https://ecomesh-ai.akarshbandi82.workers.dev
 
-      - name: Upload Web Build # Save artifacts
-        uses: actions/upload-artifact@v4 # Upload action
-        with: # Config
-          name: web-release # Artifact name
-          path: apps/web/build/web/** # Web build directory
+      - name: Upload Web Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-release
+          path: apps/web/build/web/**
+
+  deploy-web:
+    name: Deploy Web to Cloudflare Pages
+    runs-on: ubuntu-latest
+    needs: build-web
+    environment: production
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Download Web Build
+        uses: actions/download-artifact@v4
+        with:
+          name: web-release
+          path: dist
+
+      - name: Install Wrangler
+        run: pnpm install -g wrangler@^3.107.3
+
+      - name: Deploy to Cloudflare Pages
+        run: wrangler pages deploy dist --project-name=ecomesh-web --branch=main
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_PAGES_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
   deploy-workers:
     name: Deploy Cloudflare Workers
     runs-on: ubuntu-latest
     needs: [lint, test]
-    if: false
+    if: github.ref == 'refs/heads/main'
     environment: production
     steps:
       - name: Checkout code
@@ -166,7 +205,8 @@ jobs: # Job definitions start here
           pnpm install --frozen-lockfile
           pnpm wrangler deploy --env production
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_SIGNALING_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Deploy AI Worker
         run: |
@@ -174,4 +214,5 @@ jobs: # Job definitions start here
           pnpm install --frozen-lockfile
           pnpm wrangler deploy --env production
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_AI_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
