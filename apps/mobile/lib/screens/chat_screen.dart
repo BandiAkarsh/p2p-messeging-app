@@ -142,6 +142,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     try {
       final suggestion =
           await aiService.generateReply(aiContext); // Get AI reply
+      if (!mounted) return;
       _messageController.text = suggestion; // Fill input
     } catch (e) {
       if (!mounted) return;

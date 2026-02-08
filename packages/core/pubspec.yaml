@@ -1,7 +1,7 @@
 name: ecomesh_core # Package name for pubspec
 version: 1.0.0 # Semantic version
 description: Core interfaces and models for EcoMesh P2P messenger # Package description
-publish_to: none
+publish_to: "none"
 
 environment: # Dart SDK constraints
   sdk: ">=3.0.0 <4.0.0" # Require Dart 3.0+
