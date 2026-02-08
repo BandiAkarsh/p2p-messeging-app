@@ -16,7 +16,7 @@ new_sqlite_classes = ["SignalingRoom"]
 ENVIRONMENT = "development"
 
 [env.production]
-name = "ecomesh-signaling-prod"
+name = "ecomesh-signaling"
 compatibility_date = "2025-02-04"
 compatibility_flags = ["nodejs_compat"]
 

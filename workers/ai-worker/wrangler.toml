@@ -4,7 +4,7 @@ compatibility_date = "2025-02-04"
 compatibility_flags = ["nodejs_compat"]
 
 [env.production]
-name = "ecomesh-ai-prod"
+name = "ecomesh-ai"
 
 [env.staging]
 name = "ecomesh-ai-staging"
