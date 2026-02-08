@@ -1,11 +1,14 @@
 name: ecomesh_services # Services package
 version: 1.0.0 # Version
 description: Business logic services for EcoMesh # Description
+publish_to: none
 
 environment: # Dart SDK
   sdk: ">=3.0.0 <4.0.0" # Dart 3.0+
 
 dependencies:
+  flutter:
+    sdk: flutter
   ecomesh_core:
     path: ../core
   ecomesh_adapters:

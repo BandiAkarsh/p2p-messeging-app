@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 /// Security Manager - Advanced security features for P2P messaging
 /// Implements: Anti-screenshot, Anti-tampering, Self-destructing messages,
@@ -17,7 +16,7 @@ class SecurityManager {
   bool _autoLockEnabled = true;
   Duration _autoLockTimeout = const Duration(minutes: 5);
   Timer? _autoLockTimer;
-  
+
   // Message self-destruct registry
   final Map<String, DateTime> _selfDestructMessages = {};
   Timer? _cleanupTimer;
@@ -26,10 +25,10 @@ class SecurityManager {
   Future<void> initialize() async {
     // Set up anti-screenshot (Android only, web uses CSS)
     await _setupAntiScreenshot();
-    
+
     // Start cleanup timer for self-destructing messages
     _startCleanupTimer();
-    
+
     // Set up auto-lock
     _setupAutoLock();
   }
@@ -48,7 +47,7 @@ class SecurityManager {
   /// Set up automatic screen lock
   void _setupAutoLock() {
     if (!_autoLockEnabled) return;
-    
+
     // Reset timer on user activity
     _resetAutoLockTimer();
   }
@@ -104,7 +103,7 @@ class SecurityManager {
     final random = Random.secure();
     final privateKey = List<int>.generate(32, (_) => random.nextInt(256));
     final publicKey = _derivePublicKey(privateKey);
-    
+
     return EphemeralKeyPair(
       publicKey: publicKey,
       privateKey: privateKey,
@@ -135,7 +134,7 @@ class SecurityManager {
     // - Debugger detection
     // - Code modification detection
     // - Emulator detection
-    
+
     // Placeholder implementation
     return true;
   }
@@ -165,7 +164,7 @@ class SecurityManager {
     _biometricEnabled = biometricEnabled ?? _biometricEnabled;
     _autoLockEnabled = autoLockEnabled ?? _autoLockEnabled;
     _autoLockTimeout = autoLockTimeout ?? _autoLockTimeout;
-    
+
     if (_autoLockEnabled) {
       _setupAutoLock();
     } else {
@@ -201,7 +200,7 @@ class EphemeralKeyPair {
   final List<int> publicKey;
   final List<int> privateKey;
   final DateTime createdAt;
-  
+
   EphemeralKeyPair({
     required this.publicKey,
     required this.privateKey,
@@ -215,7 +214,7 @@ class SecureWidget extends StatefulWidget {
   final Widget child;
   final bool preventScreenshots;
   final VoidCallback? onLock;
-  
+
   const SecureWidget({
     super.key,
     required this.child,
@@ -227,7 +226,8 @@ class SecureWidget extends StatefulWidget {
   State<SecureWidget> createState() => _SecureWidgetState();
 }
 
-class _SecureWidgetState extends State<SecureWidget> with WidgetsBindingObserver {
+class _SecureWidgetState extends State<SecureWidget>
+    with WidgetsBindingObserver {
   final _security = SecurityManager();
   bool _isLocked = false;
 
@@ -273,7 +273,7 @@ class _SecureWidgetState extends State<SecureWidget> with WidgetsBindingObserver
         ),
       );
     }
-    
+
     return widget.child;
   }
 }
@@ -284,7 +284,7 @@ class SecureTextField extends StatefulWidget {
   final String? hintText;
   final bool obscureText;
   final ValueChanged<String>? onChanged;
-  
+
   const SecureTextField({
     super.key,
     required this.controller,
@@ -310,7 +310,7 @@ class _SecureTextFieldState extends State<SecureTextField> {
         hintText: widget.hintText,
         border: const OutlineInputBorder(),
         // Disable paste if sensitive
-        suffixIcon: widget.obscureText 
+        suffixIcon: widget.obscureText
             ? IconButton(
                 icon: const Icon(Icons.visibility_off),
                 onPressed: () {
