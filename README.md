@@ -11,7 +11,9 @@
 ## 🚀 Live Demo
 
 - **Web App**: [https://ecomesh-web.pages.dev](https://ecomesh-web.pages.dev)
-- **API Status**: [https://ecomesh-signaling.your-subdomain.workers.dev/health](https://ecomesh-signaling.workers.dev/health)
+- **Signaling Worker**: [https://ecomesh-signaling.akarshbandi82.workers.dev](https://ecomesh-signaling.akarshbandi82.workers.dev)
+- **AI Worker**: [https://ecomesh-ai.akarshbandi82.workers.dev](https://ecomesh-ai.akarshbandi82.workers.dev)
+- **API Status**: Check individual worker health endpoints
 
 ---
 
