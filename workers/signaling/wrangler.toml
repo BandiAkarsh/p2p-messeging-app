@@ -3,12 +3,6 @@ main = "dist/index.js"
 compatibility_date = "2025-02-04"
 compatibility_flags = ["nodejs_compat"]
 
-[env.production]
-name = "ecomesh-signaling-prod"
-
-[env.staging]
-name = "ecomesh-signaling-staging"
-
 [durable_objects]
 bindings = [
   { name = "SIGNALING_ROOMS", class_name = "SignalingRoom" }
@@ -21,5 +15,23 @@ new_sqlite_classes = ["SignalingRoom"]
 [vars]
 ENVIRONMENT = "development"
 
+[env.production]
+name = "ecomesh-signaling-prod"
+compatibility_date = "2025-02-04"
+compatibility_flags = ["nodejs_compat"]
+
+[env.production.durable_objects]
+bindings = [
+  { name = "SIGNALING_ROOMS", class_name = "SignalingRoom" }
+]
+
+[[env.production.migrations]]
+tag = "v1"
+new_sqlite_classes = ["SignalingRoom"]
+
 [env.production.vars]
 ENVIRONMENT = "production"
+
+[env.staging]
+name = "ecomesh-signaling-staging"
+
