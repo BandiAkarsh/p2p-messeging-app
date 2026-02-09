@@ -9,10 +9,10 @@ environment: # Dart SDK constraints
 dependencies: # Runtime dependencies
   freezed_annotation: ^2.4.1 # Code generation for immutable classes
   json_annotation: ^4.9.0 # JSON serialization annotations
-  lints: ^5.1.1
 
 dev_dependencies: # Development dependencies
   build_runner: ^2.4.9 # Build runner for code generation
   freezed: ^2.5.2 # Immutable class generator
   json_serializable: ^6.8.0 # JSON serialization generator
+  lints: ^4.0.0 # Dart lints
   test: ^1.25.0 # Testing framework
