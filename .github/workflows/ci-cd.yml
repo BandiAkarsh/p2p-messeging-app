@@ -108,24 +108,24 @@ jobs: # Job definitions start here
           flutter-version: ${{ env.FLUTTER_VERSION }} # Version from env
           channel: "stable" # Stable channel
 
-      - name: Setup Gradle Properties # Configure Gradle for CI
+      - name: Setup Environment and Build # Configure and build Android
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME }}
         run: |
+          echo "Java home: $JAVA_HOME"
+          java -version
           cd apps/mobile/android
+          # Clear any cached gradle state
+          rm -rf ~/.gradle/caches/
+          rm -rf .gradle/
+          # Configure gradle properties
           echo "org.gradle.java.home=$JAVA_HOME" >> gradle.properties
           echo "org.gradle.daemon=false" >> gradle.properties
+          echo "org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m" >> gradle.properties
           cat gradle.properties
-
-      - name: Kill Gradle Daemon # Kill any existing daemon
-        run: |
-          cd apps/mobile/android
-          ./gradlew --stop || true
-          rm -rf ~/.gradle/caches/
-
-      - name: Build Android APK # Create Android release
-        run: | # Commands
-          cd apps/mobile                                           # Navigate to app
+          cd ..
           flutter config --jdk-dir="$JAVA_HOME"
-          flutter build apk --release                              # Build release APK
+          flutter build apk --release
 
       - name: Upload APK # Save build artifact
         uses: actions/upload-artifact@v4 # Artifact upload action
