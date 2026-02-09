@@ -107,6 +107,19 @@ jobs: # Job definitions start here
           flutter-version: ${{ env.FLUTTER_VERSION }} # Version from env
           channel: "stable" # Stable channel
 
+      - name: Setup Gradle Properties # Configure Gradle for CI
+        run: |
+          cd apps/mobile/android
+          echo "org.gradle.java.home=${{ steps.setup-java.outputs.path }}" >> gradle.properties
+          echo "org.gradle.daemon=false" >> gradle.properties
+          cat gradle.properties
+
+      - name: Kill Gradle Daemon # Kill any existing daemon
+        run: |
+          cd apps/mobile/android
+          ./gradlew --stop || true
+          rm -rf ~/.gradle/caches/
+
       - name: Build Android APK # Create Android release
         env:
           JAVA_HOME: ${{ steps.setup-java.outputs.path }}
