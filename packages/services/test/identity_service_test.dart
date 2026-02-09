@@ -13,7 +13,7 @@ void main() {
       final identity = await identityService.generateIdentity();
 
       expect(identity, isNotNull);
-      expect(identity!['userId'], hasLength(32));
+      expect(identity['userId'], hasLength(32));
       expect(identity['publicKey'], isNotEmpty);
       expect(identity['privateKey'], isNotEmpty);
       expect(identity['mnemonic'], isNotEmpty);
@@ -74,7 +74,7 @@ void main() {
 
     test('formatUserId formats 32-char ID correctly', () {
       // Create a 32-character hex string
-      final testId = 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6';
+      const testId = 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6';
       final formatted = identityService.formatUserId(testId);
 
       // Should format as: a1b2-c3d4-e5f6-g7h8-i9j0-k1l2-m3n4-o5p6
