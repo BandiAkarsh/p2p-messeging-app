@@ -96,6 +96,7 @@ jobs: # Job definitions start here
         uses: actions/checkout@v4 # Official action
 
       - name: Setup Java 17 # Install Java 17 for Gradle compatibility
+        id: setup-java
         uses: actions/setup-java@v4
         with:
           java-version: "17"
@@ -110,7 +111,7 @@ jobs: # Job definitions start here
       - name: Setup Gradle Properties # Configure Gradle for CI
         run: |
           cd apps/mobile/android
-          echo "org.gradle.java.home=${{ steps.setup-java.outputs.path }}" >> gradle.properties
+          echo "org.gradle.java.home=$JAVA_HOME" >> gradle.properties
           echo "org.gradle.daemon=false" >> gradle.properties
           cat gradle.properties
 
@@ -121,12 +122,9 @@ jobs: # Job definitions start here
           rm -rf ~/.gradle/caches/
 
       - name: Build Android APK # Create Android release
-        env:
-          JAVA_HOME: ${{ steps.setup-java.outputs.path }}
         run: | # Commands
           cd apps/mobile                                           # Navigate to app
-          export JAVA_HOME="${{ steps.setup-java.outputs.path }}"
-          flutter config --jdk-dir="${{ steps.setup-java.outputs.path }}"
+          flutter config --jdk-dir="$JAVA_HOME"
           flutter build apk --release                              # Build release APK
 
       - name: Upload APK # Save build artifact
