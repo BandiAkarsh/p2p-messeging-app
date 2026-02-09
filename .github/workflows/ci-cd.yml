@@ -95,6 +95,12 @@ jobs: # Job definitions start here
       - name: Checkout code # Get code
         uses: actions/checkout@v4 # Official action
 
+      - name: Setup Java 17 # Install Java 17 for Gradle compatibility
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
       - name: Setup Flutter # Install Flutter SDK
         uses: subosito/flutter-action@v2 # Setup action
         with: # Config
