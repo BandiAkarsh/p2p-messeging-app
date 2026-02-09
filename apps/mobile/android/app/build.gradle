@@ -42,13 +42,6 @@ android {
 
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
-    
-    // Force compatible bouncycastle version for Java 17
-    constraints {
-        implementation('org.bouncycastle:bcprov-jdk18on:1.72') {
-            because 'version 1.80 requires Java 21, but we use Java 17'
-        }
-    }
 }
 
 flutter {

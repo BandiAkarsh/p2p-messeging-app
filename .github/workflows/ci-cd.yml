@@ -95,11 +95,11 @@ jobs: # Job definitions start here
       - name: Checkout code # Get code
         uses: actions/checkout@v4 # Official action
 
-      - name: Setup Java 17 # Install Java 17 for Gradle compatibility
+      - name: Setup Java 21 # Install Java 21 for Gradle and library compatibility
         id: setup-java
         uses: actions/setup-java@v4
         with:
-          java-version: "17"
+          java-version: "21"
           distribution: "temurin"
 
       - name: Setup Flutter # Install Flutter SDK
