@@ -3,12 +3,6 @@ allprojects {
         google()
         mavenCentral()
     }
-    
-    // Force Java 17 for all subprojects
-    tasks.withType(JavaCompile) {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
 }
 
 rootProject.buildDir = "../build"
