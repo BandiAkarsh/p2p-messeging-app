@@ -15,3 +15,6 @@ new_sqlite_classes = ["SignalingRoom"]
 [vars]
 ENVIRONMENT = "production"
 
+# Note: Use environment variable or wrangler config for API token
+# api_token = "your-api-token-here"
+

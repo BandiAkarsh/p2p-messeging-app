@@ -9,3 +9,6 @@ binding = "AI"
 [vars]
 ENVIRONMENT = "production"
 MAX_TOKENS = "512"
+
+# Note: Use environment variable or wrangler config for API token
+# api_token = "your-api-token-here"
