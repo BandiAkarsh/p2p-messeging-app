@@ -2104,7 +2104,7 @@ class IdentityService {
 
       // Extract keys
       final publicKey = await keyPair.extractPublicKey();
-      final privateKeyBytes = await keyPair.extractPrivateKeyBytes();
+      final privateKeyBytes = (await keyPair.extractPrivateKeyBytes()).toList();
 
       // Generate BIP39 compliant mnemonic with checksum
       final mnemonic = _generateBIP39Mnemonic();
@@ -2159,7 +2159,7 @@ class IdentityService {
       final keyPair = await algorithm.newKeyPairFromSeed(seed.sublist(0, 32));
 
       final publicKey = await keyPair.extractPublicKey();
-      final privateKeyBytes = await keyPair.extractPrivateKeyBytes();
+      final privateKeyBytes = (await keyPair.extractPrivateKeyBytes()).toList();
 
       final userId = _bytesToHex(publicKey.bytes.take(16).toList());
 
@@ -2240,7 +2240,8 @@ class IdentityService {
   Future<List<int>> _mnemonicToSeed(List<String> words) async {
     // Join words with single space (BIP39 standard)
     final phrase = words.join(' ');
-    final password = utf8.encode(phrase);
+    final password =
+        utf8.encode(phrase).toList(); // Make mutable for secure wipe
     final salt = utf8.encode(_seedSalt);
 
     // PBKDF2 with HMAC-SHA512, 2048 iterations, 64-byte output
@@ -2255,7 +2256,7 @@ class IdentityService {
       nonce: salt,
     );
 
-    final seed = await secretKey.extractBytes();
+    final seed = (await secretKey.extractBytes()).toList();
 
     // Wipe sensitive data
     _secureWipe(password);
