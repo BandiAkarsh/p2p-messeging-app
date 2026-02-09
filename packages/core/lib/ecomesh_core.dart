@@ -1,5 +1,3 @@
-library ecomesh_core; // Library declaration
-
 export 'src/ports/transport_port.dart'; // Export transport interface
 export 'src/ports/storage_port.dart'; // Export storage interface
 export 'src/ports/ai_port.dart'; // Export AI interface
