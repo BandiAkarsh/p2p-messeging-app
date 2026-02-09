@@ -108,8 +108,12 @@ jobs: # Job definitions start here
           channel: "stable" # Stable channel
 
       - name: Build Android APK # Create Android release
+        env:
+          JAVA_HOME: ${{ steps.setup-java.outputs.path }}
         run: | # Commands
           cd apps/mobile                                           # Navigate to app
+          export JAVA_HOME="${{ steps.setup-java.outputs.path }}"
+          flutter config --jdk-dir="${{ steps.setup-java.outputs.path }}"
           flutter build apk --release                              # Build release APK
 
       - name: Upload APK # Save build artifact
