@@ -74,21 +74,21 @@ jobs: # Job definitions start here
           flutter-version: ${{ env.FLUTTER_VERSION }} # From env variable
           channel: "stable" # Stable releases only
 
-       - name: Install dependencies # Get all packages
-         run: | # Shell commands
-           cd packages/core && dart pub get
-           cd ../adapters && dart pub get
-           cd ../services && dart pub get
-           cd ../../apps/mobile && flutter pub get
-           cd ../web && flutter pub get
+      - name: Install dependencies # Get all packages
+        run: | # Shell commands
+          cd packages/core && dart pub get
+          cd ../adapters && dart pub get
+          cd ../services && dart pub get
+          cd ../../apps/mobile && flutter pub get
+          cd ../web && flutter pub get
 
-       - name: Run Dart tests # Execute test suite
-         run: | # Shell commands
-           cd packages/core && dart test
-           cd ../adapters && dart test || true  # Continue even if no tests
-           cd ../services && dart test || true  # Continue even if no tests
-           cd ../../apps/mobile && flutter test || true  # Continue even if no tests
-           cd ../web && flutter test || true  # Continue even if no tests
+      - name: Run Dart tests # Execute test suite
+        run: | # Shell commands
+          cd packages/core && dart test
+          cd ../adapters && dart test || true  # Continue even if no tests
+          cd ../services && dart test || true  # Continue even if no tests
+          cd ../../apps/mobile && flutter test || true  # Continue even if no tests
+          cd ../web && flutter test || true  # Continue even if no tests
 
   build-mobile: # Job for mobile builds
     name: Build Mobile Apps # Display name
@@ -112,9 +112,9 @@ jobs: # Job definitions start here
           flutter-version: ${{ env.FLUTTER_VERSION }} # Version from env
           channel: "stable" # Stable channel
 
-       - name: Setup Environment and Build # Configure and build Android
-         env:
-           JAVA_HOME: ${{ steps.setup-java.outputs.path }}
+      - name: Setup Environment and Build # Configure and build Android
+        env:
+          JAVA_HOME: ${{ steps.setup-java.outputs.path }}
         run: |
           echo "Java home: $JAVA_HOME"
           java -version
